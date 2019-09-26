@@ -74,7 +74,7 @@ linreg<-setRefClass("linreg",
       #get_png<-function(filename) grid::rasterGrob(png::readPNG(filename),interpolate=TRUE)
       g<-readPNG("liu.png")
       tu<-rasterGrob(g,interpolate=TRUE)
-      t <- grid::roundrectGrob()  ##Draw a frame
+      #t <- grid::roundrectGrob()  ##Draw a frame
       
       g1<-ggplot(guo$Data)+
          geom_point(aes(x=guo$FittedValues,y=guo$Residuals),shape=1)+

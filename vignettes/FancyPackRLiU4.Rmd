@@ -10,6 +10,7 @@ vignette: >
 ---
 
 ```{r, include = FALSE,warning=FALSE,}
+knitr::opts_chunk$set(error = TRUE)
 library(FancyPackRLiU4)
 #install.packages("ggplot2")
 library("ggplot2")
