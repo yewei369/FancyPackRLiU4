@@ -36,7 +36,7 @@ linreg<-setRefClass("linreg",
        shu=as.data.frame(cbind(x,y))  ## 14. Trainning Data prepared
 
        #if(qr==FALSE)
-      co=solve(t(x)%*%x,t(x)%*%y) #1.Estimated Coefficients
+       co=solve(t(x)%*%x,t(x)%*%y) #1.Estimated Coefficients
        fi=x%*%co                   #2.Fitted values
        re=y-fi                     #3.Residuals
        df=length(y)-(length(all.vars(formula))-1) #4.Freedom degree
