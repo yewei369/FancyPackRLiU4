@@ -5,7 +5,7 @@ Linreg RC class
 ## Description
 *linreg* is a pilot RC project to carry out linear regression. Given \code{formula} and data source \code{data}, it will find the best fitted linear regression model.
 
-Plus, there is a hand-written version of QR-decomposation presented which is called when *qr* set TRUE to carry out linear regression in a robust way.
+Plus, there is a QR-decomposation presented which is called when *qr* set TRUE to carry out linear regression in a robust way. Also a Linköping University's theme has been embedded into the plot.
 
 ## Fields
 *formula*, a suggested linear regression model

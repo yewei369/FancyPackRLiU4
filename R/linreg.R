@@ -14,18 +14,20 @@
 linreg<-setRefClass("linreg",
   fields=list(formula="formula",
               data="data.frame",
-              qr="logical",
+              qrde="logical",
               guo="list"),
   
   
   methods=list(
     
     #Predefined methods
-    initialize=function(formula="formula",data="data.frame",qr="logical") {
+    initialize=function(formula="formula",data="data.frame",qrde="logical") {
        if(!class(formula)=="formula") stop("The formula should be a formula object!")
        if(!is.data.frame(data)) stop("The data should be a data frame object!")
       
        library(ggplot2)
+       library(png)
+       library(grid)
        ##install.packages("gridExtra")
      
        va=all.vars(formula)          #15.Variables y,x1,x2...
@@ -34,37 +36,22 @@ linreg<-setRefClass("linreg",
        tem=as.character(formula)
        gs=paste(tem[2],tem[1],tem[3],sep="") #13.Formula in character
        shu=as.data.frame(cbind(x,y))  ## 14. Trainning Data prepared
-
-       #if(qr==FALSE)
-       co=solve(t(x)%*%x,t(x)%*%y) #1.Estimated Coefficients
-       fi=x%*%co                   #2.Fitted values
-       re=y-fi                     #3.Residuals
+       QR=qr(x)                      #QR decomposition
+       
+       if(qrde==FALSE) co=solve(t(x)%*%x,t(x)%*%y) 
+       else co=solve.qr(QR,y)          #1.Estimated Coefficients
+       
+       fi=x%*%co                                  #2.Fitted values
+       re=y-fi                                    #3.Residuals
        df=length(y)-(length(all.vars(formula))-1) #4.Freedom degree
-       red=t(re)%*%re/df           #5.Variance of residuals
-       cod=rep(red,length(co))*diag(solve(t(x)%*%x))   #7.Variance of coefficients
-       cot=co/sqrt(cod)            #9.t-values of coefficients
+       red=t(re)%*%re/df                          #5.Variance of residuals
+       resd=sqrt(red)                             #6.StStandard Variance of residuals
+              
+       if(qrde==FALSE) cod=rep(red,length(co))*diag(solve(t(x)%*%x))
+       else cod=rep(red,length(co))*diag(chol2inv(qr.R(QR)))      #7.Variance of coefficients
        
-       #else 
-       #Regression Coefficient 
-         #co <- solve(t(x) %*% x) %*% t(x) %*% y
-         #co <- round(co, 2)
-         #The fitted value
-         #fi <- x %*% co
-         #The residuals  
-         #re <- as.vector(y - x %*% co)
-         #degrees of freedom 
-         #n <- length(y)
-         #p <- (length(all.vars(formula))-1)
-         #df <- n - p
-         #Residual variance 
-         #red = t(re)%*%(re/df)
-         # The variance of the regression coefficients:
-         #cod <- rep(red,length(co))*diag(solve(t(x)%*%x))
-         #The t-values for each coefficient:
-         #cot <- co/(sqrt(cod))}        
-       
-       resd=sqrt(red)              #6.StStandard Variance of residuals
        cosd=sqrt(cod)              #8.Standard Variance of coefficients 
+       cot=co/sqrt(cod)           #9.t-values of coefficients
        tpv=1-pt(cot,df)            #10.Possibility of testing wrong
        
        guo<<-list(Coefficients=co,FittedValues=fi,Residuals=re,FreedomDegree=df,VarianceResiduals=red,StdErrorResiduals=resd,VarianceCoefficients=cod,StdError=cosd,Tcoefficients=cot,Possibility=tpv,X=x,Y=y,Formula=gs,Data=shu,VariableNames=va)
@@ -72,11 +59,8 @@ linreg<-setRefClass("linreg",
   
       
     #Required methods
-    
-    
-    
     print=function() {
-       te<-dimnames(guo$Coefficients)[[1]]
+       te<-names(guo$Coefficients)
        cat(paste("linreg(formula=",guo$Formula,",data=iris)",sep=""))
        cat("\n")
        for(i in 1:length(te)) cat(sprintf("%*s",20,te[i]))
@@ -86,13 +70,21 @@ linreg<-setRefClass("linreg",
     plot=function(){
       if(length(guo$VariableNames)>2) stop("Too many independent variables!")
       
+      #get_png<-function(filename) grid::rasterGrob(png::readPNG(filename),interpolate=TRUE)
+      g<-readPNG("C:\\Users\\A550240\\Desktop\\R\\GitPub\\FancyPackRLiU4\\R\\liu.png")
+      tu<-rasterGrob(g,interpolate=TRUE)
+      t <- grid::roundrectGrob()  ##Draw a frame
+      
       g1<-ggplot(guo$Data)+
          geom_point(aes(x=guo$FittedValues,y=guo$Residuals),shape=1)+
          xlab(paste("Fitted values\n",guo$Formula,sep=""))+
          ylab("Residuals")+
          ggtitle("Residuals VS Fitted")+
          theme(plot.title = element_text(hjust = 0.5))+
-         stat_smooth(aes(x=guo$FittedValues,y=guo$Residuals),method = "lm", col = "red")
+         stat_smooth(aes(x=guo$FittedValues,y=guo$Residuals),method="lm",col="red")+
+         annotation_custom(tu,xmin=5.49,xmax=5.67,ymin=-2.6,ymax=-2)+
+         coord_cartesian(clip="off")+
+         theme(plot.background=element_rect(fill="#00b9e7",colour="#00b9e7"),plot.margin=margin(5,5,30,5))
       
       rest<-sqrt(abs(guo$Residuals/sd(guo$Residuals)))
       g2<-ggplot()+
@@ -101,11 +93,13 @@ linreg<-setRefClass("linreg",
         ylab(expression(sqrt(abs(StandardizedResiduals))))+
         ggtitle("Scale-Location")+
         theme(plot.title = element_text(hjust = 0.5))+
-        stat_smooth(aes(x=guo$FittedValues,y=rest),method = "lm", col = "red")
+        stat_smooth(aes(x=guo$FittedValues,y=rest),method = "lm", col = "red")+
+        annotation_custom(tu,xmin=5.5,xmax=5.65,ymin=-0.35,ymax=0.05)+
+        coord_cartesian(clip="off")+
+        theme(plot.background = element_rect(fill="#00b9e7",colour="#00b9e7"),plot.margin=margin(5,5,30,5))
       
         ##readline(prompt="Press any key to continue")
-        list(Residuals_VS_Fitted=g1,Scale_Location=g2)
-        },
+        list(Residuals_VS_Fitted=g1,Scale_Location=g2)},
     
     resid=function() return(as.vector(guo$Residuals)),
     pred=function() return(as.vector(guo$FittedValues)),
