@@ -12,7 +12,7 @@ vignette: >
 ```{r, include = FALSE,warning=FALSE,}
 library(FancyPackRLiU4)
 #install.packages("ggplot2")
-#library("ggplot2")
+library("ggplot2")
 ```
 
 ## Description

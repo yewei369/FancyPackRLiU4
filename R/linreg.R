@@ -25,7 +25,8 @@ linreg<-setRefClass("linreg",
        if(!class(formula)=="formula") stop("The formula should be a formula object!")
        if(!is.data.frame(data)) stop("The data should be a data frame object!")
       
-       #library(ggplot2)
+       
+       library(ggplot2)
        library(png)
        library(grid)
        ##install.packages("gridExtra")

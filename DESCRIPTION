@@ -10,6 +10,9 @@ License: N/A
 Suggests: 
     testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    ggplot2,
+    png,
+    grid
 VignetteBuilder: knitr
 RoxygenNote: 6.1.1
