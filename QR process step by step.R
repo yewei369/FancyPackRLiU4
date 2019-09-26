@@ -21,7 +21,7 @@ QR <- function(X,y){
   Yhat <- X %*% betas
   
 #The residuals  
-  e <- as.vector(y - X %*% betas)
+  e <- (y - X %*% betas)
   
 #degrees of freedom 
   n <- length(y)
@@ -40,7 +40,7 @@ QR <- function(X,y){
   
   
   
-  return(list(betas = betas, e= e, R2 = R2, fittedV = Yhat, DegreesFreedom = df,ResidualVarinace= R, TheVarianceOfTheregressionCoefficients = varbeta , t_value = t_value ))
+  return(list(betas = betas, e= e, R = R, fittedV = Yhat, DegreesFreedom = df,ResidualVarinace= R, TheVarianceOfTheregressionCoefficients = varbeta , t_value = t_value ))
 }
 
 QR(X,y)
