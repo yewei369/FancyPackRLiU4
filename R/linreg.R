@@ -35,33 +35,33 @@ linreg<-setRefClass("linreg",
        gs=paste(tem[2],tem[1],tem[3],sep="") #13.Formula in character
        shu=as.data.frame(cbind(x,y))  ## 14. Trainning Data prepared
 
-       if(qr==FALSE)
-      {co=solve(t(x)%*%x,t(x)%*%y) #1.Estimated Coefficients
+       #if(qr==FALSE)
+      co=solve(t(x)%*%x,t(x)%*%y) #1.Estimated Coefficients
        fi=x%*%co                   #2.Fitted values
        re=y-fi                     #3.Residuals
        df=length(y)-(length(all.vars(formula))-1) #4.Freedom degree
        red=t(re)%*%re/df           #5.Variance of residuals
        cod=rep(red,length(co))*diag(solve(t(x)%*%x))   #7.Variance of coefficients
-       cot=co/sqrt(cod)}            #9.t-values of coefficients
+       cot=co/sqrt(cod)            #9.t-values of coefficients
        
-       else 
-       {#Regression Coefficient 
-         co <- solve(t(x) %*% x) %*% t(x) %*% y
-         co <- round(co, 2)
+       #else 
+       #Regression Coefficient 
+         #co <- solve(t(x) %*% x) %*% t(x) %*% y
+         #co <- round(co, 2)
          #The fitted value
-         fi <- x %*% co
+         #fi <- x %*% co
          #The residuals  
-         re <- as.vector(y - x %*% co)
+         #re <- as.vector(y - x %*% co)
          #degrees of freedom 
-         n <- length(y)
-         p <- (length(all.vars(formula))-1)
-         df <- n - p
+         #n <- length(y)
+         #p <- (length(all.vars(formula))-1)
+         #df <- n - p
          #Residual variance 
-         red = t(re)%*%(re/df)
+         #red = t(re)%*%(re/df)
          # The variance of the regression coefficients:
-         cod <- rep(red,length(co))*diag(solve(t(x)%*%x))
+         #cod <- rep(red,length(co))*diag(solve(t(x)%*%x))
          #The t-values for each coefficient:
-         cot <- co/(sqrt(cod))}        
+         #cot <- co/(sqrt(cod))}        
        
        resd=sqrt(red)              #6.StStandard Variance of residuals
        cosd=sqrt(cod)              #8.Standard Variance of coefficients 
