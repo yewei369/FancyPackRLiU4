@@ -72,7 +72,7 @@ linreg<-setRefClass("linreg",
       if(length(guo$VariableNames)>2) stop("Too many independent variables!")
       
       #get_png<-function(filename) grid::rasterGrob(png::readPNG(filename),interpolate=TRUE)
-      g<-readPNG("C:\\Users\\A550240\\Desktop\\R\\GitPub\\FancyPackRLiU4\\R\\liu.png")
+      g<-readPNG("liu.png")
       tu<-rasterGrob(g,interpolate=TRUE)
       t <- grid::roundrectGrob()  ##Draw a frame
       
