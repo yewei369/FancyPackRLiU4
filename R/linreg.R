@@ -9,6 +9,7 @@
 #' data(iris)
 #' a<-linreg$new(formula=Sepal.Length~Sepal.Width,data=iris)
 #' a$summary()
+#' @export
 #' 
 
 linreg<-setRefClass("linreg",
