@@ -6,11 +6,11 @@
 #' @param data, a data source used to train the model
 #' @return a list of key results from regression, including Coefficients,FittedValues,Residuals,FreedomDegree,VarianceResiduals,StdErrorResiduals,VarianceCoefficients,StdError,Tcoefficients,Possibility,X,Y,Formula,Data,VariableNames
 #' @examples
+#' library("FancyPackRLiU4")
 #' data(iris)
 #' a<-linreg$new(formula=Sepal.Length~Sepal.Width,data=iris)
 #' a$summary()
 #' @export
-#' 
 
 linreg<-setRefClass("linreg",
   fields=list(formula="formula",
