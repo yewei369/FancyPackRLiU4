@@ -10,6 +10,7 @@
 #' a<-linreg$new(formula=Sepal.Length~Sepal.Width,data=iris)
 #' a$print()          
 #' a$plot()
+#' 
 
 linreg<-setRefClass("linreg",
   fields=list(formula="formula",
