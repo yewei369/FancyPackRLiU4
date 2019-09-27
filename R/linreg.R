@@ -9,7 +9,7 @@
 #' data(iris)
 #' a<-linreg$new(formula=Sepal.Length~Sepal.Width,data=iris)
 #' a$print()          
-#' a$plot()
+#' a$summary()
 #' 
 
 linreg<-setRefClass("linreg",
