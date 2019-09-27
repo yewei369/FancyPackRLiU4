@@ -8,7 +8,6 @@
 #' @examples
 #' data(iris)
 #' a<-linreg$new(formula=Sepal.Length~Sepal.Width,data=iris)
-#' a$print()          
 #' a$summary()
 #' 
 

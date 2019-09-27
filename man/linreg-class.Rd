@@ -20,6 +20,6 @@ Given \code{formula} and data source \code{data}, find the best fitted linear re
 \examples{
 data(iris)
 a<-linreg$new(formula=Sepal.Length~Sepal.Width,data=iris)
-a$print()          
-a$plot()
+a$summary()
+
 }
