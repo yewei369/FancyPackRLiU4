@@ -47,7 +47,7 @@ summary() return a printout including the coefficients with their standard error
 data(iris)
 a<-linreg$new(formula=Sepal.Length~Sepal.Width,data=iris)
 a$print()          
-a$plot()
+#a$plot()
 a$resid()
 a$pred()
 a$coef()
